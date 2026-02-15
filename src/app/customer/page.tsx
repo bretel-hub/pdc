@@ -8,41 +8,48 @@ import CashbackChart from "@/components/CashbackChart";
 import TransactionTable from "@/components/TransactionTable";
 
 export default function CustomerDashboard() {
-  const customer = useMemo(() => getCustomerData(), []);
+  const data = useMemo(() => getCustomerData(), []);
   const currentYear = new Date().getFullYear();
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Welcome back, {customer.name.split(" ")[0]}</h1>
-        <p className="text-gray-500 mt-1">{customer.company} — Your cash rewards at a glance</p>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Welcome back, {data.name.split(" ")[0]}</h1>
+          <p className="text-gray-500 mt-1">{data.company} — Your rewards with Apex Distributors</p>
+        </div>
+        <div className="text-left sm:text-right">
+          <p className="text-sm font-semibold text-gray-900">{data.name}</p>
+          <p className="text-sm text-gray-400">{data.email}</p>
+        </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard label="YTD Spend" value={formatCurrency(customer.ytdSpend)} />
-        <StatCard label="YTD Cash Rewards" value={formatCurrency(customer.ytdCashback)} accent />
+        <StatCard label="YTD Spend with Apex" value={formatCurrency(data.ytdSpend)} />
+        <StatCard label="YTD Cash Rewards Earned" value={formatCurrency(data.ytdCashback)} accent />
         <StatCard label="Cashback Rate" value="3%" sub="On all purchases" />
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <SpendChart
-          data={customer.yearOverYear}
+          data={data.yearOverYear}
           currentYear={currentYear}
-          title="Total Spend"
+          title="Total Spend with Apex"
           hoverLabel="Spend"
         />
         <CashbackChart
-          data={customer.yearOverYear}
+          data={data.yearOverYear}
           currentYear={currentYear}
-          title="Total Cash Rewards"
+          title="Total Cash Rewards Earned"
           hoverLabel="Cash Rewards"
         />
       </div>
 
       {/* Table */}
-      <TransactionTable records={[...customer.previousYearRecords, ...customer.currentYearRecords]} />
+      <TransactionTable records={[...data.previousYearRecords, ...data.currentYearRecords]} />
     </div>
   );
 }

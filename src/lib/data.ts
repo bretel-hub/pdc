@@ -105,9 +105,9 @@ function buildCustomer(scale: number): Customer {
 
   return {
     id: "cust-001",
-    name: "Tim Reynolds",
+    name: scale === 1 ? "Sarah Mitchell" : "Tim Reynolds",
     company: scale === 1 ? "Apex Distributors" : "Premier Partners",
-    email: scale === 1 ? "tim@apexdistributors.com" : "tim@premierpartners.com",
+    email: scale === 1 ? "sarah@apexdistributors.com" : "tim@premierpartners.com",
     currentYearRecords,
     previousYearRecords,
     yearOverYear,
