@@ -20,7 +20,7 @@ export default function MerchantDashboard() {
           <p className="text-gray-500 mt-1">Manage your customers and track rewards</p>
         </div>
         <div className="text-left sm:text-right">
-          <p className="text-sm font-semibold text-gray-900">{customer.name} <span className="text-gray-400 font-normal">|</span> {customer.company}</p>
+          <p className="text-sm font-semibold text-gray-900">{customer.name}</p>
           <p className="text-sm text-gray-400">{customer.email}</p>
         </div>
       </div>
