@@ -23,7 +23,7 @@ export default function SpendChart({ records }: SpendChartProps) {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Spend & Cashback</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Spend & Cash Distributed</h3>
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
           {RANGE_OPTIONS.map((opt) => (
             <button
@@ -56,12 +56,12 @@ export default function SpendChart({ records }: SpendChartProps) {
             tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
           />
           <Tooltip
-            formatter={(value, name) => [formatCurrency(value as number), name === "spend" ? "Spend" : "Cashback"]}
+            formatter={(value, name) => [formatCurrency(value as number), name === "spend" ? "Spend" : "Cash Distributed"]}
             contentStyle={{ borderRadius: 12, border: "1px solid #e5e7eb" }}
           />
           <Legend />
-          <Bar yAxisId="spend" dataKey="spend" name="Spend" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-          <Bar yAxisId="cashback" dataKey="cashback" name="Cashback" fill="#10b981" radius={[6, 6, 0, 0]} />
+          <Bar yAxisId="spend" dataKey="spend" name="Spend" fill="#7c3aed" radius={[6, 6, 0, 0]} />
+          <Bar yAxisId="cashback" dataKey="cashback" name="Cash Distributed" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

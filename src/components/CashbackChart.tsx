@@ -23,7 +23,7 @@ export default function CashbackChart({ records }: CashbackChartProps) {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Cumulative Cashback</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Cumulative Cash Distributed</h3>
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
           {RANGE_OPTIONS.map((opt) => (
             <button
@@ -49,14 +49,14 @@ export default function CashbackChart({ records }: CashbackChartProps) {
             tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
           />
           <Tooltip
-            formatter={(value) => [formatCurrency(value as number), "Cumulative Cashback"]}
+            formatter={(value) => [formatCurrency(value as number), "Cash Distributed"]}
             contentStyle={{ borderRadius: 12, border: "1px solid #e5e7eb" }}
           />
           <Area
             type="monotone"
             dataKey="cumulativeCashback"
-            stroke="#10b981"
-            fill="#d1fae5"
+            stroke="#8b5cf6"
+            fill="#ede9fe"
             strokeWidth={2}
           />
         </AreaChart>

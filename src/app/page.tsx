@@ -31,8 +31,8 @@ export default function MerchantDashboard() {
               <p className="text-xl font-bold text-gray-900">{formatCurrency(customer.totalSpend)}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Total Cashback</p>
-              <p className="text-xl font-bold text-emerald-600">{formatCurrency(customer.totalCashback)}</p>
+              <p className="text-sm text-gray-500">Cash Rewards Distributed</p>
+              <p className="text-xl font-bold text-purple-600">{formatCurrency(customer.totalCashback)}</p>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function MerchantDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total Customers" value="1" sub="MVP demo" />
         <StatCard label="Total Spend (12M)" value={formatCurrency(customer.totalSpend)} />
-        <StatCard label="Total Cashback Earned" value={formatCurrency(customer.totalCashback)} accent />
+        <StatCard label="Cash Rewards Distributed" value={formatCurrency(customer.totalCashback)} />
         <StatCard label="Cashback Rate" value="3%" sub="Flat rate on all spend" />
       </div>
 

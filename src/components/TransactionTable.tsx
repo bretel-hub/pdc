@@ -19,8 +19,8 @@ export default function TransactionTable({ records }: TransactionTableProps) {
             <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
               <th className="px-6 py-3">Month</th>
               <th className="px-6 py-3 text-right">Spend</th>
-              <th className="px-6 py-3 text-right">Cashback (3%)</th>
-              <th className="px-6 py-3 text-right">Cumulative Cashback</th>
+              <th className="px-6 py-3 text-right">Cash Distributed (3%)</th>
+              <th className="px-6 py-3 text-right">Cumulative Cash Distributed</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -28,7 +28,7 @@ export default function TransactionTable({ records }: TransactionTableProps) {
               <tr key={r.monthKey} className="hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4 text-sm font-medium text-gray-900">{r.month}</td>
                 <td className="px-6 py-4 text-sm text-right text-gray-700">{formatCurrency(r.spend)}</td>
-                <td className="px-6 py-4 text-sm text-right text-emerald-600 font-medium">{formatCurrency(r.cashback)}</td>
+                <td className="px-6 py-4 text-sm text-right text-purple-600 font-medium">{formatCurrency(r.cashback)}</td>
                 <td className="px-6 py-4 text-sm text-right text-gray-700">{formatCurrency(r.cumulativeCashback)}</td>
               </tr>
             ))}
