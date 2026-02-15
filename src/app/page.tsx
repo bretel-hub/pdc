@@ -39,6 +39,8 @@ export default function MerchantDashboard() {
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [sortAsc, setSortAsc] = useState(false);
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 25;
 
   const filtered = customers
     .filter(
@@ -47,6 +49,12 @@ export default function MerchantDashboard() {
         c.email.toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => sortAsc ? a.ytdSpend - b.ytdSpend : b.ytdSpend - a.ytdSpend);
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  // Reset to page 0 when search changes
+  const handleSearch = (val: string) => { setSearch(val); setPage(0); };
 
   const selected = selectedId ? customers.find((c) => c.id === selectedId) : null;
 
@@ -96,7 +104,7 @@ export default function MerchantDashboard() {
             type="text"
             placeholder="Search customers..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent w-full sm:w-72"
           />
         </div>
@@ -118,7 +126,7 @@ export default function MerchantDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {filtered.map((c) => (
+              {paged.map((c) => (
                 <tr
                   key={c.id}
                   onClick={() => setSelectedId(selectedId === c.id ? null : c.id)}
@@ -143,13 +151,38 @@ export default function MerchantDashboard() {
                   </td>
                 </tr>
               ))}
-              {filtered.length === 0 && (
+              {paged.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center text-gray-400">No customers found</td>
                 </tr>
               )}
             </tbody>
           </table>
+        </div>
+        {/* Pagination */}
+        <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+          <p className="text-sm text-gray-500">
+            Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, filtered.length)} of {filtered.length} customers
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage(Math.max(0, page - 1))}
+              disabled={page === 0}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              ← Prev
+            </button>
+            <span className="px-3 py-1.5 text-sm text-gray-500">
+              Page {page + 1} of {totalPages}
+            </span>
+            <button
+              onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
+              disabled={page >= totalPages - 1}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Next →
+            </button>
+          </div>
         </div>
       </div>
 

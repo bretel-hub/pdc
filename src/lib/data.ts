@@ -209,19 +209,130 @@ function buildCustomer(id: string, name: string, company: string, email: string,
 
 // === MERCHANT DATA (Apex Distributors sees all customers) ===
 
-const MERCHANT_CUSTOMERS: Customer[] = [
-  buildCustomer("cust-001", "Tim Reynolds", "Premier Partners", "tim@premierpartners.com", 42, 250000, 500000),
-  buildCustomer("cust-002", "Jessica Chen", "Northgate Supply Co.", "jessica@northgatesupply.com", 87, 180000, 350000),
-  buildCustomer("cust-003", "Marcus Williams", "Redline Industrial", "marcus@redlineindustrial.com", 153, 120000, 280000),
-  buildCustomer("cust-004", "Amanda Foster", "Summit Logistics", "amanda@summitlogistics.com", 219, 300000, 550000),
-  buildCustomer("cust-005", "David Park", "Coastal Freight Inc.", "david@coastalfreight.com", 311, 80000, 200000),
+const FIRST_NAMES = [
+  "Tim","Jessica","Marcus","Amanda","David","Sarah","James","Emily","Robert","Lisa",
+  "Michael","Jennifer","William","Maria","Richard","Linda","Thomas","Patricia","Chris","Barbara",
+  "Daniel","Susan","Matthew","Karen","Andrew","Nancy","Joshua","Betty","Kevin","Dorothy",
+  "Brian","Sandra","Steven","Ashley","Edward","Kimberly","Jason","Donna","Ryan","Carol",
+  "Jacob","Michelle","Gary","Laura","Eric","Megan","Stephen","Brenda","Larry","Stephanie",
+  "Frank","Rebecca","Scott","Sharon","Raymond","Cynthia","Gregory","Kathleen","Benjamin","Amy",
+  "Samuel","Angela","Patrick","Shirley","Alexander","Anna","Jack","Ruth","Dennis","Brenda",
+  "Jerry","Pamela","Tyler","Nicole","Aaron","Katherine","Jose","Christine","Nathan","Samantha",
+  "Henry","Janet","Douglas","Catherine","Peter","Frances","Zachary","Virginia","Kyle","Debra",
+  "Noah","Rachel","Ethan","Carolyn","Jeremy","Janice","Roger","Marie","Keith","Joyce",
+  "Terry","Diana","Sean","Natalie","Austin","Brittany","Carl","Theresa","Arthur","Beverly",
+  "Lawrence","Denise","Jesse","Tammy","Dylan","Irene","Bryan","Jane","Joe","Lori",
+  "Albert","Andrea","Willie","Heather","Gerald","Teresa","Bruce","Jacqueline","Wayne","Ann",
+  "Ralph","Gloria","Roy","Jean","Eugene","Kelly","Russell","Cheryl","Randy","Martha",
+  "Philip","Mildred","Harry","Amber","Howard","Sara","Vincent","Danielle","Bobby","Crystal",
 ];
+
+const LAST_NAMES = [
+  "Reynolds","Chen","Williams","Foster","Park","Mitchell","Anderson","Thompson","Martinez","Garcia",
+  "Robinson","Clark","Rodriguez","Lewis","Lee","Walker","Hall","Allen","Young","Hernandez",
+  "King","Wright","Lopez","Hill","Scott","Green","Adams","Baker","Gonzalez","Nelson",
+  "Carter","Perez","Roberts","Turner","Phillips","Campbell","Parker","Evans","Edwards","Collins",
+  "Stewart","Sanchez","Morris","Rogers","Reed","Cook","Morgan","Bell","Murphy","Bailey",
+  "Rivera","Cooper","Richardson","Cox","Howard","Ward","Torres","Peterson","Gray","Ramirez",
+  "James","Watson","Brooks","Kelly","Sanders","Price","Bennett","Wood","Barnes","Ross",
+  "Henderson","Coleman","Jenkins","Perry","Powell","Long","Patterson","Hughes","Flores","Washington",
+  "Butler","Simmons","Foster","Gonzales","Bryant","Alexander","Russell","Griffin","Diaz","Hayes",
+  "Myers","Ford","Hamilton","Graham","Sullivan","Wallace","Woods","Cole","West","Jordan",
+  "Owens","Reynolds","Fisher","Ellis","Harrison","Gibson","McDonald","Cruz","Marshall","Ortiz",
+  "Gomez","Murray","Freeman","Wells","Webb","Simpson","Stevens","Tucker","Porter","Hunter",
+  "Hicks","Crawford","Henry","Boyd","Mason","Morales","Kennedy","Warren","Dixon","Ramos",
+  "Reyes","Burns","Gordon","Shaw","Holmes","Rice","Robertson","Hunt","Black","Daniels",
+  "Palmer","Mills","Nichols","Grant","Knight","Ferguson","Rose","Stone","Hawkins","Dunn",
+];
+
+const COMPANY_PREFIXES = [
+  "Summit","Apex","Pinnacle","Vanguard","Cornerstone","Meridian","Cascade","Ironclad","Sterling","Beacon",
+  "Crestline","Bridgeport","Keystone","Northgate","Redline","Pacific","Atlantic","Continental","Evergreen","Silverline",
+  "Granite","Eagle","Falcon","Horizon","Skyline","Delta","Pioneer","Patriot","Liberty","Republic",
+  "Trident","Valor","Shield","Compass","Anchor","Harbor","Lakeside","Ridgeline","Creekside","Stonebridge",
+  "Ironwood","Copperfield","Oakmont","Cedarpoint","Timberline","Goldcrest","Westbrook","Eastgate","Southport","Northwind",
+  "Riverview","Highland","Lakeview","Bayshore","Crossroads","Greenfield","Westfield","Fairview","Clearwater","Blackstone",
+  "Whitfield","Grayson","Ashton","Brookfield","Canterbury","Davenport","Edgewood","Foxworth","Glendale","Hartfield",
+  "Ironside","Jameson","Kingsway","Lexington","Montclair","Newport","Oakridge","Pemberton","Quincy","Rosewood",
+  "Stratton","Thornton","Upland","Valleyview","Wakefield","Xavier","Yorktown","Zenith","Aldridge","Barrington",
+  "Clifton","Dunmore","Elsworth","Fairmont","Glenwood","Hillcrest","Iverson","Jennings","Kendall","Langford",
+];
+
+const COMPANY_SUFFIXES = [
+  "Partners","Industries","Logistics","Supply Co.","Manufacturing","Distribution","Services","Solutions","Group","Corp",
+  "Enterprises","International","Systems","Technologies","Holdings","Associates","Trading","Consulting","Freight","Industrial",
+  "Materials","Equipment","Contracting","Engineering","Packaging","Wholesale","Mechanical","Electric","Environmental","Resources",
+  "Networks","Dynamics","Operations","Fabrication","Construction","Chemical","Processing","Commercial","Ventures","Capital",
+  "Development","Warehouse","Transport","Marine","Precision","Global","Premier","Direct","National","Regional",
+];
+
+function generateMerchantCustomers(): Customer[] {
+  const rand = seededRandom(99999);
+  const customers: Customer[] = [];
+  const usedCompanies = new Set<string>();
+
+  for (let i = 0; i < 547; i++) {
+    const firstName = FIRST_NAMES[Math.floor(rand() * FIRST_NAMES.length)];
+    const lastName = LAST_NAMES[Math.floor(rand() * LAST_NAMES.length)];
+    
+    // Generate unique company name
+    let company: string;
+    let attempts = 0;
+    do {
+      const prefix = COMPANY_PREFIXES[Math.floor(rand() * COMPANY_PREFIXES.length)];
+      const suffix = COMPANY_SUFFIXES[Math.floor(rand() * COMPANY_SUFFIXES.length)];
+      company = `${prefix} ${suffix}`;
+      attempts++;
+      if (attempts > 20) {
+        // Add a disambiguator
+        company = `${prefix} ${suffix} ${Math.floor(rand() * 900) + 100}`;
+      }
+    } while (usedCompanies.has(company));
+    usedCompanies.add(company);
+
+    const emailDomain = company.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 20);
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${emailDomain}.com`;
+    const id = `cust-${String(i + 1).padStart(4, "0")}`;
+    const seed = i * 137 + 42;
+
+    // Distribute spend: a few whales, many mid-tier, long tail of smaller accounts
+    let baseMin: number, baseMax: number;
+    let status: "active" | "inactive" = "active";
+
+    if (i < 10) {
+      // Top 10: $300k-$600k/mo
+      baseMin = 300000; baseMax = 600000;
+    } else if (i < 40) {
+      // Next 30: $150k-$350k/mo
+      baseMin = 150000; baseMax = 350000;
+    } else if (i < 120) {
+      // Next 80: $80k-$200k/mo
+      baseMin = 80000; baseMax = 200000;
+    } else if (i < 300) {
+      // Next 180: $30k-$100k/mo
+      baseMin = 30000; baseMax = 100000;
+    } else if (i < 480) {
+      // Next 180: $10k-$40k/mo
+      baseMin = 10000; baseMax = 40000;
+    } else {
+      // Bottom 67: $2k-$15k/mo
+      baseMin = 2000; baseMax = 15000;
+    }
+
+    // ~5% inactive
+    if (rand() < 0.05) status = "inactive";
+
+    customers.push(buildCustomer(id, `${firstName} ${lastName}`, company, email, seed, baseMin, baseMax, status));
+  }
+
+  return customers;
+}
 
 let _merchantCustomers: Customer[] | null = null;
 
 export function getMerchantCustomers(): Customer[] {
   if (_merchantCustomers) return _merchantCustomers;
-  _merchantCustomers = MERCHANT_CUSTOMERS;
+  _merchantCustomers = generateMerchantCustomers();
   return _merchantCustomers;
 }
 
