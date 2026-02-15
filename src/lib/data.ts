@@ -299,24 +299,24 @@ function generateMerchantCustomers(): Customer[] {
     let baseMin: number, baseMax: number;
     let status: "active" | "inactive" = "active";
 
-    if (i < 10) {
-      // Top 10: $300k-$600k/mo
-      baseMin = 300000; baseMax = 600000;
-    } else if (i < 40) {
-      // Next 30: $150k-$350k/mo
-      baseMin = 150000; baseMax = 350000;
-    } else if (i < 120) {
-      // Next 80: $80k-$200k/mo
-      baseMin = 80000; baseMax = 200000;
-    } else if (i < 300) {
-      // Next 180: $30k-$100k/mo
-      baseMin = 30000; baseMax = 100000;
-    } else if (i < 480) {
-      // Next 180: $10k-$40k/mo
-      baseMin = 10000; baseMax = 40000;
+    if (i < 5) {
+      // Top 5: $20k-$40k/mo
+      baseMin = 20000; baseMax = 40000;
+    } else if (i < 20) {
+      // Next 15: $8k-$20k/mo
+      baseMin = 8000; baseMax = 20000;
+    } else if (i < 60) {
+      // Next 40: $3k-$8k/mo
+      baseMin = 3000; baseMax = 8000;
+    } else if (i < 160) {
+      // Next 100: $1k-$3k/mo
+      baseMin = 1000; baseMax = 3000;
+    } else if (i < 360) {
+      // Next 200: $200-$1k/mo
+      baseMin = 200; baseMax = 1000;
     } else {
-      // Bottom 67: $2k-$15k/mo
-      baseMin = 2000; baseMax = 15000;
+      // Bottom 187: $50-$300/mo
+      baseMin = 50; baseMax = 300;
     }
 
     // ~5% inactive
@@ -368,4 +368,16 @@ export function formatCurrency(amount: number): string {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
+}
+
+export function formatAxisValue(v: number): string {
+  const abs = Math.abs(v);
+  if (abs >= 1_000_000) {
+    const m = v / 1_000_000;
+    return `$${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`;
+  }
+  if (abs >= 1_000) {
+    return `$${(v / 1000).toFixed(0)}k`;
+  }
+  return `$${v}`;
 }

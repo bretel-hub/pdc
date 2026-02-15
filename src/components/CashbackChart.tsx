@@ -3,7 +3,7 @@
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
-import { YearOverYearRecord, formatCurrency } from "@/lib/data";
+import { YearOverYearRecord, formatCurrency, formatAxisValue } from "@/lib/data";
 
 interface CashbackChartProps {
   data: YearOverYearRecord[];
@@ -32,7 +32,7 @@ export default function CashbackChart({
           <XAxis dataKey="month" tick={{ fontSize: 12 }} />
           <YAxis
             tick={{ fontSize: 12 }}
-            tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
+            tickFormatter={(v: number) => formatAxisValue(v)}
           />
           <Tooltip
             formatter={(value, name) => {
