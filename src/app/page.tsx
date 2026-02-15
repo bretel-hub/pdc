@@ -190,10 +190,9 @@ export default function MerchantDashboard() {
 
                             <div className="p-6 space-y-6">
                               {/* Stats */}
-                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <StatCard label="YTD Revenue" value={formatCurrency(selected.ytdSpend)} />
                                 <StatCard label="YTD Cash Rewards Paid" value={formatCurrency(selected.ytdCashback)} />
-                                <StatCard label="Last Month Revenue" value={formatCurrency(selected.lastMonthSpend)} />
                               </div>
 
                               {/* Charts */}
