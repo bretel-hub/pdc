@@ -96,7 +96,7 @@ export function getCustomer(): Customer {
       previousSpend: prev.spend,
       currentCashback: curr ? curr.cashback : 0,
       previousCashback: prev.cashback,
-      currentCumulativeCashback: Math.round(cumCurrent * 100) / 100,
+      currentCumulativeCashback: curr ? Math.round(cumCurrent * 100) / 100 : 0,
       previousCumulativeCashback: Math.round(cumPrevious * 100) / 100,
     });
   }
@@ -106,7 +106,7 @@ export function getCustomer(): Customer {
   _customer = {
     id: "cust-001",
     name: "Sarah Mitchell",
-    company: "Apex Distribution Co.",
+    company: "Premier Partners",
     email: "sarah@apexdist.com",
     currentYearRecords,
     previousYearRecords,
