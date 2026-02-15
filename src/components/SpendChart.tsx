@@ -49,6 +49,7 @@ export default function SpendChart({
               return [formatCurrency(value as number), label];
             }}
             contentStyle={{ borderRadius: 12, border: "1px solid #e5e7eb" }}
+            cursor={false}
           />
           <Legend />
           <Bar dataKey={dataKeyPrevious} name={prevLabel} fill="#d1d5db" radius={[4, 4, 0, 0]} />
