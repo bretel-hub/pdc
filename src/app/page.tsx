@@ -28,12 +28,12 @@ export default function MerchantDashboard() {
           </div>
           <div className="flex gap-3">
             <div className="text-right">
-              <p className="text-sm text-gray-500">Total Revenue</p>
-              <p className="text-xl font-bold text-gray-900">{formatCurrency(customer.totalSpend)}</p>
+              <p className="text-sm text-gray-500">YTD Revenue</p>
+              <p className="text-xl font-bold text-gray-900">{formatCurrency(customer.ytdSpend)}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Cash Rewards Distributed</p>
-              <p className="text-xl font-bold text-purple-600">{formatCurrency(customer.totalCashback)}</p>
+              <p className="text-sm text-gray-500">Total Cash Rewards</p>
+              <p className="text-xl font-bold text-purple-600">{formatCurrency(customer.ytdCashback)}</p>
             </div>
           </div>
         </div>
@@ -42,8 +42,8 @@ export default function MerchantDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total Customers" value="1" sub="MVP demo" />
-        <StatCard label="Total Revenue" value={formatCurrency(customer.totalSpend)} />
-        <StatCard label="Cash Rewards Distributed" value={formatCurrency(customer.totalCashback)} />
+        <StatCard label="YTD Revenue" value={formatCurrency(customer.ytdSpend)} />
+        <StatCard label="Total Cash Rewards" value={formatCurrency(customer.ytdCashback)} />
         <StatCard label="Cashback Rate" value="3%" sub="Flat rate on all spend" />
       </div>
 

@@ -29,6 +29,8 @@ export interface Customer {
   yearOverYear: YearOverYearRecord[];
   totalSpend: number;
   totalCashback: number;
+  ytdSpend: number;
+  ytdCashback: number;
 }
 
 const CASHBACK_RATE = 0.03;
@@ -111,6 +113,8 @@ function buildCustomer(scale: number): Customer {
     yearOverYear,
     totalSpend: allRecords.reduce((sum, r) => sum + r.spend, 0),
     totalCashback: allRecords.reduce((sum, r) => sum + r.cashback, 0),
+    ytdSpend: currentYearRecords.reduce((sum, r) => sum + r.spend, 0),
+    ytdCashback: currentYearRecords.reduce((sum, r) => sum + r.cashback, 0),
   };
 }
 

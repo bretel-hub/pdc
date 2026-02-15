@@ -20,8 +20,8 @@ export default function CustomerDashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard label="Total Spend" value={formatCurrency(customer.totalSpend)} />
-        <StatCard label="Cash Rewards Earned" value={formatCurrency(customer.totalCashback)} accent />
+        <StatCard label="YTD Spend" value={formatCurrency(customer.ytdSpend)} />
+        <StatCard label="YTD Cash Rewards" value={formatCurrency(customer.ytdCashback)} accent />
         <StatCard label="Cashback Rate" value="3%" sub="On all purchases" />
       </div>
 
