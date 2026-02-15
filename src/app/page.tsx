@@ -13,29 +13,15 @@ export default function MerchantDashboard() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Merchant Dashboard</h1>
-        <p className="text-gray-500 mt-1">Manage your customers and track rewards</p>
-      </div>
-
-      {/* Customer card */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900">{customer.name}</h2>
-            <p className="text-gray-500">{customer.company}</p>
-            <p className="text-sm text-gray-400">{customer.email}</p>
-          </div>
-          <div className="flex gap-3">
-            <div className="text-right">
-              <p className="text-sm text-gray-500">YTD Revenue</p>
-              <p className="text-xl font-bold text-gray-900">{formatCurrency(customer.ytdSpend)}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-500">Total Cash Rewards</p>
-              <p className="text-xl font-bold text-purple-600">{formatCurrency(customer.ytdCashback)}</p>
-            </div>
-          </div>
+      {/* Header with customer info */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Merchant Dashboard</h1>
+          <p className="text-gray-500 mt-1">Manage your customers and track rewards</p>
+        </div>
+        <div className="text-left sm:text-right">
+          <p className="text-sm font-semibold text-gray-900">{customer.name} <span className="text-gray-400 font-normal">|</span> {customer.company}</p>
+          <p className="text-sm text-gray-400">{customer.email}</p>
         </div>
       </div>
 
