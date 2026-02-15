@@ -26,7 +26,7 @@ export default function TransactionTable({ records }: TransactionTableProps) {
           <tbody className="divide-y divide-gray-100">
             {reversed.map((r) => (
               <tr key={r.monthKey} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 text-sm font-medium text-gray-900">{r.month}</td>
+                <td className="px-6 py-4 text-sm font-medium text-gray-900">{r.month} {r.year}</td>
                 <td className="px-6 py-4 text-sm text-right text-gray-700">{formatCurrency(r.spend)}</td>
                 <td className="px-6 py-4 text-sm text-right text-purple-600 font-medium">{formatCurrency(r.cashback)}</td>
                 <td className="px-6 py-4 text-sm text-right text-gray-700">{formatCurrency(r.cumulativeCashback)}</td>
