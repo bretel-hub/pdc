@@ -12,8 +12,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-purple-600">PDC</span>
-            <span className="text-sm text-purple-400 hidden sm:inline">perksdotcom</span>
+            <div className="w-2 h-9 bg-purple-600 rounded-full"></div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-2xl font-extrabold tracking-tight text-gray-900">PDC</span>
+              <span className="text-[10px] font-medium tracking-widest text-purple-500 uppercase">Perksdotcom</span>
+            </div>
           </div>
           <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
             <Link
