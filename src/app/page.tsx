@@ -38,12 +38,15 @@ export default function MerchantDashboard() {
   const currentYear = new Date().getFullYear();
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [sortAsc, setSortAsc] = useState(false);
 
-  const filtered = customers.filter(
-    (c) =>
-      c.company.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = customers
+    .filter(
+      (c) =>
+        c.company.toLowerCase().includes(search.toLowerCase()) ||
+        c.email.toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => sortAsc ? a.ytdSpend - b.ytdSpend : b.ytdSpend - a.ytdSpend);
 
   const selected = selectedId ? customers.find((c) => c.id === selectedId) : null;
 
@@ -102,9 +105,15 @@ export default function MerchantDashboard() {
             <thead>
               <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
                 <th className="px-6 py-3">Company</th>
-                <th className="px-6 py-3 text-right">YTD Revenue</th>
+                <th className="px-6 py-3 text-right">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setSortAsc(!sortAsc); }}
+                    className="inline-flex items-center gap-1 hover:text-gray-700 transition-colors"
+                  >
+                    YTD Revenue {sortAsc ? "↑" : "↓"}
+                  </button>
+                </th>
                 <th className="px-6 py-3 text-right">YTD Cash Rewards</th>
-                <th className="px-6 py-3 text-right">Last Month</th>
                 <th className="px-6 py-3 text-center">Status</th>
               </tr>
             </thead>
@@ -125,7 +134,6 @@ export default function MerchantDashboard() {
                   </td>
                   <td className="px-6 py-4 text-sm text-right font-medium text-gray-900">{formatCurrency(c.ytdSpend)}</td>
                   <td className="px-6 py-4 text-sm text-right font-medium text-purple-600">{formatCurrency(c.ytdCashback)}</td>
-                  <td className="px-6 py-4 text-sm text-right text-gray-700">{formatCurrency(c.lastMonthSpend)}</td>
                   <td className="px-6 py-4 text-center">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       c.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
@@ -137,7 +145,7 @@ export default function MerchantDashboard() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-400">No customers found</td>
+                  <td colSpan={4} className="px-6 py-12 text-center text-gray-400">No customers found</td>
                 </tr>
               )}
             </tbody>
