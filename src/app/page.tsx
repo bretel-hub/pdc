@@ -7,16 +7,40 @@ import SpendChart from "@/components/SpendChart";
 import CashbackChart from "@/components/CashbackChart";
 import TransactionTable from "@/components/TransactionTable";
 
+// Build aggregate YoY data from all customers
+function buildAggregateYoY(customers: ReturnType<typeof getMerchantCustomers>) {
+  const agg = customers[0].yearOverYear.map((_, i) => ({
+    month: customers[0].yearOverYear[i].month,
+    currentSpend: 0,
+    previousSpend: 0,
+    currentCashback: 0,
+    previousCashback: 0,
+    currentCumulativeCashback: 0,
+    previousCumulativeCashback: 0,
+  }));
+
+  for (const c of customers) {
+    for (let i = 0; i < c.yearOverYear.length; i++) {
+      agg[i].currentSpend += c.yearOverYear[i].currentSpend;
+      agg[i].previousSpend += c.yearOverYear[i].previousSpend;
+      agg[i].currentCashback += c.yearOverYear[i].currentCashback;
+      agg[i].previousCashback += c.yearOverYear[i].previousCashback;
+    }
+  }
+
+  return agg;
+}
+
 export default function MerchantDashboard() {
   const customers = useMemo(() => getMerchantCustomers(), []);
   const totals = useMemo(() => getMerchantTotals(), []);
+  const aggregateYoY = useMemo(() => buildAggregateYoY(customers), [customers]);
   const currentYear = new Date().getFullYear();
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = customers.filter(
     (c) =>
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
       c.company.toLowerCase().includes(search.toLowerCase()) ||
       c.email.toLowerCase().includes(search.toLowerCase())
   );
@@ -45,6 +69,22 @@ export default function MerchantDashboard() {
         <StatCard label="Cashback Rate" value="3%" sub="Flat rate on all spend" />
       </div>
 
+      {/* Aggregate Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <SpendChart
+          data={aggregateYoY}
+          currentYear={currentYear}
+          title="Total Revenue"
+          hoverLabel="Revenue"
+        />
+        <CashbackChart
+          data={aggregateYoY}
+          currentYear={currentYear}
+          title="Total Cash Rewards Paid"
+          hoverLabel="Cash Rewards"
+        />
+      </div>
+
       {/* Customer List */}
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -61,7 +101,6 @@ export default function MerchantDashboard() {
           <table className="w-full">
             <thead>
               <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
-                <th className="px-6 py-3">Customer</th>
                 <th className="px-6 py-3">Company</th>
                 <th className="px-6 py-3 text-right">YTD Revenue</th>
                 <th className="px-6 py-3 text-right">YTD Cash Rewards</th>
@@ -81,10 +120,9 @@ export default function MerchantDashboard() {
                   }`}
                 >
                   <td className="px-6 py-4">
-                    <p className="text-sm font-semibold text-gray-900">{c.name}</p>
+                    <p className="text-sm font-semibold text-gray-900">{c.company}</p>
                     <p className="text-xs text-gray-400">{c.email}</p>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-700">{c.company}</td>
                   <td className="px-6 py-4 text-sm text-right font-medium text-gray-900">{formatCurrency(c.ytdSpend)}</td>
                   <td className="px-6 py-4 text-sm text-right font-medium text-purple-600">{formatCurrency(c.ytdCashback)}</td>
                   <td className="px-6 py-4 text-sm text-right text-gray-700">{formatCurrency(c.lastMonthSpend)}</td>
@@ -99,7 +137,7 @@ export default function MerchantDashboard() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-400">No customers found</td>
+                  <td colSpan={5} className="px-6 py-12 text-center text-gray-400">No customers found</td>
                 </tr>
               )}
             </tbody>
@@ -112,8 +150,8 @@ export default function MerchantDashboard() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{selected.name}</h2>
-              <p className="text-gray-500">{selected.company} — {selected.email}</p>
+              <h2 className="text-xl font-bold text-gray-900">{selected.company}</h2>
+              <p className="text-gray-500">{selected.name} — {selected.email}</p>
             </div>
             <button
               onClick={() => setSelectedId(null)}
