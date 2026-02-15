@@ -27,8 +27,18 @@ export default function CustomerDashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <SpendChart data={customer.yearOverYear} currentYear={currentYear} />
-        <CashbackChart data={customer.yearOverYear} currentYear={currentYear} />
+        <SpendChart
+          data={customer.yearOverYear}
+          currentYear={currentYear}
+          title="Total Spend"
+          hoverLabel="Spend"
+        />
+        <CashbackChart
+          data={customer.yearOverYear}
+          currentYear={currentYear}
+          title="Total Cash Rewards"
+          hoverLabel="Cash Rewards"
+        />
       </div>
 
       {/* Table */}
