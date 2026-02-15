@@ -38,17 +38,17 @@ const MONTH_NAMES = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-function generateMonthlySpend(): number {
-  // Random between $250,000 and $500,000 (5x previous range)
-  return Math.round((250000 + Math.random() * 250000) * 100) / 100;
+function generateMonthlySpend(scale: number = 1): number {
+  // Base: $250,000 - $500,000. Scale down for customer-level data.
+  return Math.round((250000 + Math.random() * 250000) * scale * 100) / 100;
 }
 
-function generateYearRecords(year: number, monthCount: number): MonthlyRecord[] {
+function generateYearRecords(year: number, monthCount: number, scale: number = 1): MonthlyRecord[] {
   const records: MonthlyRecord[] = [];
   let cumulativeCashback = 0;
 
   for (let m = 0; m < monthCount; m++) {
-    const spend = generateMonthlySpend();
+    const spend = generateMonthlySpend(scale);
     const cashback = Math.round(spend * CASHBACK_RATE * 100) / 100;
     cumulativeCashback += cashback;
 
@@ -65,18 +65,16 @@ function generateYearRecords(year: number, monthCount: number): MonthlyRecord[] 
   return records;
 }
 
-let _customer: Customer | null = null;
+let _merchant: Customer | null = null;
+let _customerView: Customer | null = null;
 
-export function getCustomer(): Customer {
-  if (_customer) return _customer;
-
+function buildCustomer(scale: number): Customer {
   const now = new Date();
   const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth() + 1; // 1-12
+  const currentMonth = now.getMonth() + 1;
 
-  // Full 12 months for previous year, up to current month for current year
-  const previousYearRecords = generateYearRecords(currentYear - 1, 12);
-  const currentYearRecords = generateYearRecords(currentYear, currentMonth);
+  const previousYearRecords = generateYearRecords(currentYear - 1, 12, scale);
+  const currentYearRecords = generateYearRecords(currentYear, currentMonth, scale);
 
   // Build year-over-year comparison (only months that exist in current year)
   const yearOverYear: YearOverYearRecord[] = [];
@@ -103,18 +101,31 @@ export function getCustomer(): Customer {
 
   const allRecords = [...previousYearRecords, ...currentYearRecords];
 
-  _customer = {
+  return {
     id: "cust-001",
     name: "Sarah Mitchell",
     company: "Premier Partners",
-    email: "sarah@apexdist.com",
+    email: "sarah@premierpartners.com",
     currentYearRecords,
     previousYearRecords,
     yearOverYear,
     totalSpend: allRecords.reduce((sum, r) => sum + r.spend, 0),
     totalCashback: allRecords.reduce((sum, r) => sum + r.cashback, 0),
   };
-  return _customer;
+}
+
+// Merchant view: full volume ($250k-$500k/mo)
+export function getMerchantData(): Customer {
+  if (_merchant) return _merchant;
+  _merchant = buildCustomer(1);
+  return _merchant;
+}
+
+// Customer view: ~10% of merchant volume ($25k-$50k/mo)
+export function getCustomerData(): Customer {
+  if (_customerView) return _customerView;
+  _customerView = buildCustomer(0.1);
+  return _customerView;
 }
 
 export function formatCurrency(amount: number): string {

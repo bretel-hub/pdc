@@ -1,14 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { getCustomer, formatCurrency } from "@/lib/data";
+import { getCustomerData, formatCurrency } from "@/lib/data";
 import StatCard from "@/components/StatCard";
 import SpendChart from "@/components/SpendChart";
 import CashbackChart from "@/components/CashbackChart";
 import TransactionTable from "@/components/TransactionTable";
 
 export default function CustomerDashboard() {
-  const customer = useMemo(() => getCustomer(), []);
+  const customer = useMemo(() => getCustomerData(), []);
   const currentYear = new Date().getFullYear();
 
   return (

@@ -1,14 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { getCustomer, formatCurrency } from "@/lib/data";
+import { getMerchantData, formatCurrency } from "@/lib/data";
 import StatCard from "@/components/StatCard";
 import SpendChart from "@/components/SpendChart";
 import CashbackChart from "@/components/CashbackChart";
 import TransactionTable from "@/components/TransactionTable";
 
 export default function MerchantDashboard() {
-  const customer = useMemo(() => getCustomer(), []);
+  const customer = useMemo(() => getMerchantData(), []);
   const currentYear = new Date().getFullYear();
 
   return (
