@@ -23,7 +23,7 @@ export default function TransactionTable({ records }: TransactionTableProps) {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
       <div className="p-6 border-b border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900">Monthly History</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Monthly Sales History</h3>
         <p className="text-sm text-gray-400 mt-1">Click a month to view purchase details</p>
       </div>
       <div className="overflow-x-auto">
